@@ -1,20 +1,31 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Optional
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 
-# 1. Initialize the app
+from database import get_db
+from models import URL
+from schemas import URLCreate
+
 app = FastAPI()
 
-# 2. Define a data model using Pydantic
-class Item(BaseModel):
-    name: str
-    price: float
-    description: Optional[str] = None
 
-# In-memory storage for demonstration
-items_db = {}
+@app.post("/urls")
+def create_url(
+    url: URLCreate,
+    db: Session = Depends(get_db)
+):
+    
+    db_url = URL(
+        original_url=url.original_url,
+        short_code=url.short_code
+    )
 
-# 3. Define endpoints
-@app.get("/")
-def read_root():
-    return {"message": "Hello, FastAPI!"}
+    db.add(db_url)
+
+    db.commit()
+
+    db.refresh(db_url)
+
+    return {
+        "message": "URL created successfully",
+        "id": db_url.id
+    }
