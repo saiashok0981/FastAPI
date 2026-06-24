@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "postgresql://sai:Sai%400981@localhost:5432/url_shortner"
+DATABASE_URL = "postgresql://sai:password123@localhost:6432/url_shortner"
 
 engine = create_engine(DATABASE_URL)
 
