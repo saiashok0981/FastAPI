@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "postgresql://sai:password123@localhost:6432/url_shortner"
+import os
+
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://sai:password123@localhost:6432/productsdb")
 
 engine = create_engine(DATABASE_URL)
 
